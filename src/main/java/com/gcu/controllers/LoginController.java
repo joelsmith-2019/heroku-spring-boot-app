@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import com.gcu.business.SecurityBusinessService;
 import com.gcu.model.LoginModel;
 import com.gcu.model.OrderModel;
 
+@Slf4j
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -29,13 +31,16 @@ public class LoginController {
 
 	@GetMapping("")
 	public String display(Model model) {
+		log.info("Enter: LoginController.display()");
 		model.addAttribute("title", "Login Form");
 		model.addAttribute("loginModel", new LoginModel());
+		log.info("Exit: LoginController.display()");
 		return "login";
 	}
 
 	@PostMapping("/doLogin")
 	public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model) {
+		log.info("Enter: LoginController.doLogin()");
 		
 		// Send test message via service
 		service.test();
@@ -56,6 +61,7 @@ public class LoginController {
 		System.out.println(String.format("Form with Username of %s and Password of %s", loginModel.getUsername(),
 				loginModel.getPassword()));
 
+		log.info("Exit: LoginController.doLogin()");
 		return "orders";
 	}
 

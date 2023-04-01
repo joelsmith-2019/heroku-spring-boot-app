@@ -6,12 +6,14 @@ import java.util.stream.StreamSupport;
 
 import javax.sql.DataSource;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.gcu.data.repository.OrdersRepository;
 
+@Slf4j
 @Service
 public class OrderDataService implements DataAccessInterface<OrderEntity> {
 
@@ -30,7 +32,10 @@ public class OrderDataService implements DataAccessInterface<OrderEntity> {
 
 	@Override
 	public List<OrderEntity> findAll() {
-		return StreamSupport.stream(this.ordersRepository.findAll().spliterator(), false).collect(Collectors.toList());
+		log.info("Enter: OrderDataService.findAll()");
+		List<OrderEntity> collect = StreamSupport.stream(this.ordersRepository.findAll().spliterator(), false).collect(Collectors.toList());
+		log.info("Exit: OrderDataService.findAll()");
+		return collect;
 	}
 
 	@Override
@@ -41,6 +46,8 @@ public class OrderDataService implements DataAccessInterface<OrderEntity> {
 
 	@Override
 	public boolean create(OrderEntity order) {
+
+		log.info("Enter: OrderDataService.create()");
 		
 		String sql = "INSERT INTO orders (ORDER_NO, PRODUCT_NAME, PRICE, QUANTITY) VALUES (?, ?, ?, )";
 		
@@ -50,6 +57,8 @@ public class OrderDataService implements DataAccessInterface<OrderEntity> {
 			e.printStackTrace();
 			return false;
 		}
+
+		log.info("Exit: OrderDataService.create()");
 
 		return true;
 	}
